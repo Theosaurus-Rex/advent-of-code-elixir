@@ -10,6 +10,7 @@ defmodule Y2022.Day01 do
       |> Enum.sum()
     end
 
-  Enum.max(totaled_calories)
-  |> IO.inspect()
+  _part_1 = Enum.max(totaled_calories)
+  [one, two, three | _tail] = Enum.sort(totaled_calories, :desc)
+  _part_2 = one + two + three
 end
