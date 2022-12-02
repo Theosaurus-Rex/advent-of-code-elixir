@@ -7,9 +7,19 @@ defmodule Y2022.Day02 do
   @elf_paper "B"
   @elf_scissors "C"
 
+  @lose "X"
+  @draw "Y"
+  @win "Z"
+
   def run_part_1_game() do
     input_to_pairs()
-    |> get_round_results()
+    |> get_round_results_part_1()
+    |> Enum.sum()
+  end
+
+  def run_part_2_game() do
+    input_to_pairs()
+    |> get_round_results_part_2()
     |> Enum.sum()
   end
 
@@ -19,8 +29,12 @@ defmodule Y2022.Day02 do
     |> Enum.map(fn x -> String.split(x) end)
   end
 
-  def get_round_results(input_pairs) do
+  def get_round_results_part_1(input_pairs) do
     Enum.map(input_pairs, &calculate_round_score/1)
+  end
+
+  def get_round_results_part_2(input_pairs) do
+    Enum.map(input_pairs, &calculate_shape/1)
   end
 
   def calculate_round_score(matchup_pair) do
@@ -42,8 +56,26 @@ defmodule Y2022.Day02 do
     end
   end
 
-  # File.read!("input.txt")
-  # |> String.split("\n")
-  # |> Enum.map(fn x -> String.split(x) end)
-  # |> Enum.map(&calculate_round_score/1)
+  def calculate_shape(matchup_pair) do
+    rock = 1
+    paper = 2
+    scissors = 3
+
+    win = 6
+    draw = 3
+    lose = 0
+
+    case matchup_pair do
+      [@elf_rock, @lose] -> lose + scissors
+      [@elf_rock, @draw] -> draw + rock
+      [@elf_rock, @win] -> win + paper
+      [@elf_paper, @lose] -> lose + rock
+      [@elf_paper, @draw] -> draw + paper
+      [@elf_paper, @win] -> win + scissors
+      [@elf_scissors, @lose] -> lose + paper
+      [@elf_scissors, @draw] -> draw + scissors
+      [@elf_scissors, @win] -> win + rock
+      _ -> :error
+    end
+  end
 end
