@@ -27,9 +27,32 @@ defmodule Y2015.Day02 do
     Enum.sum(paper_dimensions)
   end
 
+  def ribbon_needed([l, w, h]) do
+    wrap_ribbon = 2 * (l + w + h - hd(Enum.sort([l, w, h], :desc)))
+
+    bow_ribbon = l * w * h
+
+    wrap_ribbon + bow_ribbon
+  end
+
+  def total_ribbon(input) do
+    ribbon =
+      for box <- input do
+        ribbon_needed(box)
+      end
+
+    Enum.sum(ribbon)
+  end
+
   def part_1 do
     File.read!("input.txt")
     |> parse_input()
     |> total_wrapping_paper()
+  end
+
+  def part_2 do
+    File.read!("input.txt")
+    |> parse_input()
+    |> total_ribbon()
   end
 end
